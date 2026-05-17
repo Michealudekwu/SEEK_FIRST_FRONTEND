@@ -226,7 +226,7 @@ function ResultBlock({ result, onReset }) {
   const handleDoctorReport = async () => {
     setReportBusy(true);
     setReportError(null);
-    const data = await postJSON("/api/doctors-report/", { result });  // uses API_BASE
+    const data = await postJSON("/api/doctors-report", { result });  // uses API_BASE
     setReportBusy(false);
     if (data.error) {
       setReportError(data.message || "Could not generate report.");
@@ -307,7 +307,7 @@ export default function SeekFirstAI() {
     setResult(null);
     setAlert(null);
 
-    const data = await postJSON("/api/start/", { symptoms: value });
+    const data = await postJSON("/api/start", { symptoms: value });
 
     if (data.emergency) { triggerAlert("danger", "Possible emergency", data.message || ""); return; }
     if (data.error) { triggerAlert("warn", "Something went wrong", data.message || "Try again."); return; }
@@ -331,7 +331,7 @@ export default function SeekFirstAI() {
     setStage("busy");
     setBusyMsg("Reviewing your answers…");
 
-    const data = await postJSON("/api/complete/", {
+    const data = await postJSON("/api/complete", {
       structured_symptoms: pendingSession.structured_symptoms,
       questions: pendingSession.questions,
       answers: answers,
