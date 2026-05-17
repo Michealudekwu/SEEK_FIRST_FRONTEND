@@ -2,8 +2,10 @@ import { useState, useRef } from "react";
 import { theme, styles, globalCSS } from "./styles";
 
 // ─── Utility ──────────────────────────────────────────────────────────────────
+const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
+
 async function postJSON(path, body) {
-  const res = await fetch(path, {
+  const res = await fetch(`${API_BASE}${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
@@ -224,7 +226,7 @@ function ResultBlock({ result, onReset }) {
   const handleDoctorReport = async () => {
     setReportBusy(true);
     setReportError(null);
-    const data = await postJSON("/api/doctors-report/", { result });
+    const data = await postJSON("/api/doctors-report/", { result });  // uses API_BASE
     setReportBusy(false);
     if (data.error) {
       setReportError(data.message || "Could not generate report.");
